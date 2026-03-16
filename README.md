@@ -34,15 +34,11 @@ Formülümüz şu şekildedir:
 | **40 - 60** | Arkadaşlık ilişkisiyle karşılaştırın, derin farklar varsa rahatlayın, ihtimal yüksek! 🤓 |
 | **60+** | Muhtemelen YOU ARE THAT GIRL canım ya 💅💅💅 |
 
-## 🚀 Hızlı Başlangıç
+## 🚀 Hızlı Başlangıç (Canlı Demo)
 
-Projeyi kendi bilgisayarınızda çalıştırmak için:
+Projeyi bilgisayarınıza indirmeden doğrudan tarayıcı üzerinden denemek için aşağıdaki linke tıklayabilirsiniz:
 
-```bash
-git clone [https://github.com/kcnsoftware/dayidinc-teoremi.git](https://github.com/kcnsoftware/dayidinc-teoremi.git)
-cd dayidinc-teoremi
-```
-Ardından index.html dosyasını tarayıcınızda açmanız yeterlidir.
+👉 **[Dayıdınç Teoremi Canlı Hesaplayıcı](https://kcnsoftware.github.io/dayidinc-teoremi/)**
 
 ## 🎬 Referans
 * Bu proje, Serra Dayıdınç'ın orijinal "Dayıdınç Teoremi" algoritmasına sadık kalınarak eğlence amacıyla kodlanmıştır.
