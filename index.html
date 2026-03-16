@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dayıdınç Teoremi | İlişki Hesaplayıcı</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #fce4ec; /* Açık pastel pembe */
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --primary: #d81b60; /* Koyu tatlı pembe */
+            --primary-hover: #ad1457;
+            --tooltip-bg: #333;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(216, 27, 96, 0.15);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        p.subtitle {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .formula {
+            background: #f8bbd0;
+            padding: 1rem;
+            text-align: center;
+            border-radius: 10px;
+            font-weight: 600;
+            color: var(--primary-hover);
+            margin-bottom: 2rem;
+            letter-spacing: 1px;
+        }
+
+        .input-group {
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .input-wrapper {
+            display: flex;
+            flex-direction: column;
+            width: 85%;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+        }
+
+        input {
+            padding: 0.8rem;
+            border: 2px solid #f48fb1;
+            border-radius: 8px;
+            outline: none;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+
+        input:focus { border-color: var(--primary); }
+
+        /* Tooltip (Soru İşareti) Tasarımı */
+        .tooltip-icon {
+            background: var(--primary);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            cursor: help;
+            position: relative;
+        }
+
+        .tooltip-text {
+            visibility: hidden;
+            width: 220px;
+            background-color: var(--tooltip-bg);
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 8px 12px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            right: 0;
+            font-size: 0.8rem;
+            font-weight: 400;
+            opacity: 0;
+            transition: opacity 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .tooltip-text::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            right: 10px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: var(--tooltip-bg) transparent transparent transparent;
+        }
+
+        .tooltip-icon:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        button {
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(216, 27, 96, 0.3);
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        .result-box {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .score-text { font-size: 2.5rem; font-weight: bold; margin-bottom: 0.5rem; }
+        .comment-text { font-size: 1rem; line-height: 1.5; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Dayıdınç Teoremi</h1>
+        <p class="subtitle">Birinin senden hoşlanıp hoşlanmadığını bilimsel(!) olarak hesapla.</p>
+
+        <div class="formula">
+            DT = [(M × A × D) + E] ÷ (G + F - C)
+        </div>
+
+        <div class="form-container">
+            <div class="input-group">
+                <div class="input-wrapper">
+                    <label>M (Mimik)</label>
+                    <input type="number" id="valM" placeholder="0-10 arası puan verin" min="0" max="10">
+                </div>
+                <div class="tooltip-icon">?
+                    <span class="tooltip-text">Sana takındığı mimikler ne durumda? Güzel mimikler yapıyorsa yüksek puan ver.</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="input-wrapper">
+                    <label>A (Aktif Tepki)</label>
+                    <input type="number" id="valA" placeholder="0-10 arası puan verin" min="0" max="10">
+                </div>
+                <div class="tooltip-icon">?
+                    <span class="tooltip-text">Seninle konuşurken ne kadar aktif? Seni dinliyor ve tepki veriyorsa yüksek puan.</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="input-wrapper">
+                    <label>D (Dikkatli Süzme)</label>
+                    <input type="number" id="valD" placeholder="0-10 arası puan verin" min="0" max="10">
+                </div>
+                <div class="tooltip-icon">?
+                    <span class="tooltip-text">Bana çok bakıyor mu? Seni dikkatle süzüyorsa yüksek puanı yapıştır.</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="input-wrapper">
+                    <label>E (Enerji)</label>
+                    <input type="number" id="valE" placeholder="0-10 arası puan verin" min="0" max="10">
+                </div>
+                <div class="tooltip-icon">?
+                    <span class="tooltip-text">Senin için enerji harcıyor mu? Dertlerini sahipleniyorsa yüksek puan ver.</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="input-wrapper">
+                    <label>G (Genel Sosyal)</label>
+                    <input type="number" id="valG" placeholder="0-10 arası puan verin" min="0" max="10">
+                </div>
+                <div class="tooltip-icon">?
+                    <span class="tooltip-text">Genel olarak çok sosyal ve herkese nazik biri mi? (Herkese böyleyse skoru düşürmek için yüksek puan verilir).</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="input-wrapper">
+                    <label>F (Fırsatçı Olmama)</label>
+                    <input type="number" id="valF" placeholder="0-10 arası puan verin" min="0" max="10">
+                </div>
+                <div class="tooltip-icon">?
+                    <span class="tooltip-text">Sosyal medyanı vs. fırsat bilip paylaşım YAPMIYORSA yüksek (10), YAPIYORSA düşük (0) puan ver.</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="input-wrapper">
+                    <label>C (Çekingenlik)</label>
+                    <input type="number" id="valC" placeholder="0-10 arası puan verin" min="0" max="10">
+                </div>
+                <div class="tooltip-icon">?
+                    <span class="tooltip-text">İçine kapanık ve çekingen mi? (Çekingense yüksek puan ver, çünkü adım atamaması normaldir).</span>
+                </div>
+            </div>
+
+            <button onclick="calculate()">Skoru Hesapla 💅</button>
+        </div>
+
+        <div class="result-box" id="resultBox">
+            <div class="score-text" id="scoreValue">--</div>
+            <div class="comment-text" id="commentValue">--</div>
+        </div>
+    </div>
+
+    <script>
+        function calculate() {
+            // Değerleri al ve sayıya çevir
+            let M = parseFloat(document.getElementById('valM').value) || 0;
+            let A = parseFloat(document.getElementById('valA').value) || 0;
+            let D = parseFloat(document.getElementById('valD').value) || 0;
+            let E = parseFloat(document.getElementById('valE').value) || 0;
+            let G = parseFloat(document.getElementById('valG').value) || 0;
+            let F = parseFloat(document.getElementById('valF').value) || 0;
+            let C = parseFloat(document.getElementById('valC').value) || 0;
+
+            let resultBox = document.getElementById('resultBox');
+            let scoreValue = document.getElementById('scoreValue');
+            let commentValue = document.getElementById('commentValue');
+
+            // Alt kısmın sıfır olma ihtimaline karşı kontrol (Bölme hatası olmasın)
+            let denominator = (G + F - C);
+            if (denominator <= 0) {
+                denominator = 1; // Hata vermemesi için min 1 yapıyoruz
+            }
+
+            // Formül: [(M * A * D) + E] / (G + F - C)
+            let score = ((M * A * D) + E) / denominator;
+            
+            // Puanı virgülden sonra 1 haneli gösterecek şekilde yuvarla
+            let finalScore = score.toFixed(1);
+
+            let comment = "";
+            let bgColor = "";
+            let textColor = "";
+
+            // Senin verdiğin metinlere göre şart blokları
+            if (score >= 0 && score <= 20) {
+                comment = "Sizden muhtemelen hoşlanmıyor 😭🥴🤬";
+                bgColor = "#ffebee"; // Kırmızımsı
+                textColor = "#c62828";
+            } 
+            else if (score > 20 && score <= 40) {
+                comment = "Sizden hoşlanmasını düşünmek için iyi bir izlenime ihtiyacınız var, hatta belki de en yakınınızdan hoşlanıyor olabilir. Yanlış sinyal alıyor olabilirsiniz, size kurduğu bağları... ayy en beteri 🤷🏻‍♀️🤷🏻‍♀️😭😭";
+                bgColor = "#fff3e0"; // Turuncumsu
+                textColor = "#e65100";
+            }
+            else if (score > 40 && score <= 60) {
+                comment = "Arkadaşlık ilişkisiyle aranızdaki şeyi karşılaştırmalısın, eğer derin farklar varsa rahatlayabilirsin senden hoşlanma ihtimali yüksek 🤓";
+                bgColor = "#e8f5e9"; // Yeşilsi
+                textColor = "#2e7d32";
+            }
+            else if (score > 60) {
+                comment = "E muhtemelen YOU ARE THAT GIRL canım ya 💅💅💅";
+                bgColor = "#fce4ec"; // Pembeden
+                textColor = "#d81b60";
+            }
+
+            // Sonuçları ekrana yazdır
+            scoreValue.innerText = finalScore;
+            scoreValue.style.color = textColor;
+            commentValue.innerText = comment;
+            commentValue.style.color = textColor;
+            resultBox.style.backgroundColor = bgColor;
+            
+            resultBox.style.display = "block";
+        }
+    </script>
+</body>
+</html>
