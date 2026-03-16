@@ -1,0 +1,1 @@
+# dayidinc-teoremi
